@@ -1,17 +1,33 @@
 ---
 layout: post
-title: my test post :)
+title: Context-Managers in Python
 categories:
 - blog
 ---
+Time and again i happen to find something intresting in python which makes me wonder why havent i started
+using it i n my code.This time it was about Context-Managers. so what is this? We all have been using it 
+somewhere in our code. Let me give a very simple example.
 
+{% highlight python %}
+
+with open(“hello.txt”, “w”) as f: 
+	f.write(“Hello World”) 
+
+{% endhighlight %}
+
+Now notice the `with open(“hello.txt”, “w”) as f` statement in above code. What does it do?
+
+
+
+
+<!-- 
 Tattooed roof party *vinyl* freegan single-origin coffee wayfarers tousled, umami yr 
 meggings hella selvage. Butcher bespoke seitan, cornhole umami gentrify put a bird 
 on it occupy trust fund. Umami whatever kitsch, locavore fingerstache Tumblr pork belly
 [keffiyeh](#). Chia Echo Park Pitchfork, Blue Bottle [hashtag](#) stumptown skateboard selvage 
 mixtape. Echo Park retro butcher banjo cardigan, seitan flannel Brooklyn paleo fixie 
 Truffaut. Forage mustache Thundercats next level disrupt. Bicycle rights forage tattooed
-chia, **wayfarers** swag raw denim hashtag biodiesel occupy gastropub!
+chia, **wayfarers** swag raw denim hashtag biodiesel occupy gastropub! -->
 
 ---
 
