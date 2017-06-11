@@ -11,46 +11,46 @@ A Twisted protocol handles data in an asynchronous manner. The protocol responds
 
 
 
-                                    from twisted.internet.protocol import Protocol
+from twisted.internet.protocol import Protocol
 
-                                    class Echo(Protocol):
-                                        def dataReceived(self, data):
-                                            self.transport.write(data)
+class Echo(Protocol):
+    def dataReceived(self, data):
+        self.transport.write(data)
 {% endhighlight %}
  
   This is one of the simplest protocols. It simply writes back whatever is written to it, and does not respond to all events. Here is an example of a Protocol responding to another event:
  {% highlight python %}
-                                    from twisted.internet.protocol import Protocol
+from twisted.internet.protocol import Protocol
 
-                                    class QOTD(Protocol):
+class QOTD(Protocol):
 
-                                        def connectionMade(self):
-                                            self.transport.write("An apple a day keeps the doctor away\r\n")
-                                            self.transport.loseConnection()
+    def connectionMade(self):
+        self.transport.write("An apple a day keeps the doctor away\r\n")
+        self.transport.loseConnection()
 {% endhighlight %}
   This protocol responds to the initial connection with a well known quote, and then terminates the connection.
   The connectionMade event is usually where setup of the connection object happens, as well as any initial greetings (as in the QOTD protocol above, which is actually based on RFC 865). The connectionLost event is where tearing down of any connection-specific objects is done. Here is an example:
   Here connectionMade and connectionLost cooperate to keep a count of the active protocols in a shared object, the factory. The factory must be passed to Echo.__init__ when creating a new instance. The factory is used to share state that exists beyond the lifetime of any given connection. You will see why this object is called a “factory” in the next section.
 
  {% highlight python %}
-                                    from twisted.internet.protocol import Protocol
+from twisted.internet.protocol import Protocol
 
-                                    class Echo(Protocol):
+class Echo(Protocol):
 
-                                        def __init__(self, factory):
-                                            self.factory = factory
+    def __init__(self, factory):
+        self.factory = factory
 
-                                        def connectionMade(self):
-                                            self.factory.numProtocols = self.factory.numProtocols + 1
-                                            self.transport.write(
-                                                "Welcome! There are currently %d open connections.\n" %
-                                                (self.factory.numProtocols,))
+    def connectionMade(self):
+        self.factory.numProtocols = self.factory.numProtocols + 1
+        self.transport.write(
+            "Welcome! There are currently %d open connections.\n" %
+            (self.factory.numProtocols,))
 
-                                        def connectionLost(self, reason):
-                                            self.factory.numProtocols = self.factory.numProtocols - 1
+    def connectionLost(self, reason):
+        self.factory.numProtocols = self.factory.numProtocols - 1
 
-                                        def dataReceived(self, data):
-                                            self.transport.write(data)
+    def dataReceived(self, data):
+        self.transport.write(data)
 {% endhighlight %}
 Using the protocol:
 Here is code that will run the QOTD server discussed earlier:
@@ -58,171 +58,171 @@ In this example, I create a protocol Factory. I want to tell this factory that i
 endpoint.listen() tells the reactor to handle connections to the endpoint’s address using a particular protocol, but the reactor needs to be running in order for it to do anything. reactor.run() starts the reactor and then waits forever for connections to arrive on the port you’ve specified. You can stop the reactor by hitting Control-C in a terminal or calling reactor.stop().
 
  {% highlight python %}
-                                    from twisted.internet.protocol import Factory
-                                    from twisted.internet.endpoints import TCP4ServerEndpoint
-                                    from twisted.internet import reactor
+from twisted.internet.protocol import Factory
+from twisted.internet.endpoints import TCP4ServerEndpoint
+from twisted.internet import reactor
 
-                                    class QOTDFactory(Factory):
-                                      def buildProtocol(self, addr):
-                                          return QOTD()
+class QOTDFactory(Factory):
+  def buildProtocol(self, addr):
+      return QOTD()
 
-                                    # 8007 is the port you want to run under. Choose something >1024
-                                    endpoint = TCP4ServerEndpoint(reactor, 8007)
-                                    endpoint.listen(QOTDFactory())
-                                    reactor.run()
+# 8007 is the port you want to run under. Choose something >1024
+endpoint = TCP4ServerEndpoint(reactor, 8007)
+endpoint.listen(QOTDFactory())
+reactor.run()
 {% endhighlight %}
 Simpler: factory creation<br>
 For a factory which simply instantiates instances of a specific protocol class, there is a simpler way to implement the factory.
 The default implementation of the buildProtocol method calls the protocol attribute of the factory to create a Protocol instance,
 and then sets an attribute on it called factory which points to the factory itself. This lets every Protocol access, and possibly modify, the persistent configuration. Here is an example that uses these features instead of overriding buildProtocol:
  {% highlight python %}
-                                    from twisted.internet.protocol import Factory, Protocol
-                                    from twisted.internet.endpoints import TCP4ServerEndpoint
-                                    from twisted.internet import reactor
+from twisted.internet.protocol import Factory, Protocol
+from twisted.internet.endpoints import TCP4ServerEndpoint
+from twisted.internet import reactor
 
-                                    class QOTD(Protocol):
+class QOTD(Protocol):
 
-                                        def connectionMade(self):
-                                            # self.factory was set by the factory's default buildProtocol:
-                                            self.transport.write(self.factory.quote + '\r\n')
-                                            self.transport.loseConnection()
+    def connectionMade(self):
+        # self.factory was set by the factory's default buildProtocol:
+        self.transport.write(self.factory.quote + '\r\n')
+        self.transport.loseConnection()
 
 
-                                    class QOTDFactory(Factory):
+class QOTDFactory(Factory):
 
-                                        # This will be used by the default buildProtocol to create new protocols:
-                                        protocol = QOTD
+    # This will be used by the default buildProtocol to create new protocols:
+    protocol = QOTD
 
-                                        def __init__(self, quote=None):
-                                            self.quote = quote or 'An apple a day keeps the doctor away'
+    def __init__(self, quote=None):
+        self.quote = quote or 'An apple a day keeps the doctor away'
 
-                                    endpoint = TCP4ServerEndpoint(reactor, 8007)
-                                    endpoint.listen(QOTDFactory("configurable quote"))
+endpoint = TCP4ServerEndpoint(reactor, 8007)
+endpoint.listen(QOTDFactory("configurable quote"))
 {% endhighlight %}
 A Factory has two methods to perform application-specific building up and tearing down (since a Factory is frequently persisted,
 it is often not appropriate to do them in __init__ or __del__, and would frequently be too early or too late).
 Here is an example of a factory which allows its Protocols to write to a special log-file:
  {% highlight python %}
-                                  from twisted.internet.protocol import Factory
-                                  from twisted.protocols.basic import LineReceiver
+from twisted.internet.protocol import Factory
+from twisted.protocols.basic import LineReceiver
 
-                                  class LoggingProtocol(LineReceiver):
+class LoggingProtocol(LineReceiver):
 
-                                      def lineReceived(self, line):
-                                          self.factory.fp.write(line + '\n')
+    def lineReceived(self, line):
+        self.factory.fp.write(line + '\n')
 
-                                  class LogfileFactory(Factory):
+class LogfileFactory(Factory):
 
-                                      protocol = LoggingProtocol
+    protocol = LoggingProtocol
 
-                                      def __init__(self, fileName):
-                                          self.file = fileName
+    def __init__(self, fileName):
+        self.file = fileName
 
-                                      def startFactory(self):
-                                          self.fp = open(self.file, 'a')
+    def startFactory(self):
+        self.fp = open(self.file, 'a')
 
-                                      def stopFactory(self):
-                                          self.fp.close()
+    def stopFactory(self):
+        self.fp.close()
 {% endhighlight %}
 
 Chat server using thing slearned above:
  {% highlight python %}
-                                  from twisted.internet.protocol import Factory
-                                  from twisted.protocols.basic import LineReceiver
-                                  from twisted.internet import reactor
-                                  from clint.textui import colored
-                                  import sys
-                                  import datetime
+from twisted.internet.protocol import Factory
+from twisted.protocols.basic import LineReceiver
+from twisted.internet import reactor
+from clint.textui import colored
+import sys
+import datetime
 
-                                  port = 8000
-                                  chatLog = []
+port = 8000
+chatLog = []
 
-                                  class ChatProtocol(LineReceiver):
-                                      def __init__(self, factory):
-                                          self.factory = factory
-                                          self.name = None
-                                          self.state = "REGISTER"
+class ChatProtocol(LineReceiver):
+    def __init__(self, factory):
+        self.factory = factory
+        self.name = None
+        self.state = "REGISTER"
 
-                                      def getTime(self):
-                                          return '({:%Y/%m/%d %H:%M:%S})'.format(datetime.datetime.now())
+    def getTime(self):
+        return '({:%Y/%m/%d %H:%M:%S})'.format(datetime.datetime.now())
 
-                                      def connectionMade(self):
-                                          banner = ("""
-                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                          #### Successfully Connected to the Chat Server ####
-                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                          """)
-                                          self.sendLine(banner)
-                                          self.sendLine(self.getTime())
-                                          self.sendLine("Choose a username:")
+    def connectionMade(self):
+        banner = ("""
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        #### Successfully Connected to the Chat Server ####
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        """)
+        self.sendLine(banner)
+        self.sendLine(self.getTime())
+        self.sendLine("Choose a username:")
 
-                                      def connectionLost(self, reason):
-                                          leftMsg = colored.red('%s has left the channel.' % (self.name,))
-                                          if self.name in self.factory.users:
-                                              del self.factory.users[self.name]
-                                              self.broadcastMessage(leftMsg)
-                                          chatLog.append(self.name + " exits.")
-                                          self.updateSessionInfo()
+    def connectionLost(self, reason):
+        leftMsg = colored.red('%s has left the channel.' % (self.name,))
+        if self.name in self.factory.users:
+            del self.factory.users[self.name]
+            self.broadcastMessage(leftMsg)
+        chatLog.append(self.name + " exits.")
+        self.updateSessionInfo()
 
-                                      def lineReceived(self, line):
-                                          if self.state == "REGISTER":
-                                              self.handle_REGISTER(line)
-                                          else:
-                                              self.handle_CHAT(line)
+    def lineReceived(self, line):
+        if self.state == "REGISTER":
+            self.handle_REGISTER(line)
+        else:
+            self.handle_CHAT(line)
 
-                                      def handle_REGISTER(self, name):
-                                         if name in self.factory.users:
-                                             self.sendLine("Sorry, %r is taken. Try something else." % name)
-                                             return
+    def handle_REGISTER(self, name):
+       if name in self.factory.users:
+           self.sendLine("Sorry, %r is taken. Try something else." % name)
+           return
 
-                                         welcomeMsg = ('Welcome to the chat, %s.' % (name,))
+       welcomeMsg = ('Welcome to the chat, %s.' % (name,))
 
-                                         joinedMsg = colored.green('%s has joined the chanel.' % (name,))
-                                         self.sendLine(welcomeMsg)
-                                         self.broadcastMessage(joinedMsg)
-                                         self.name = name
-                                         self.factory.users[name] = self
-                                         self.state = "CHAT"
-                                         self.updateSessionInfo()
+       joinedMsg = colored.green('%s has joined the chanel.' % (name,))
+       self.sendLine(welcomeMsg)
+       self.broadcastMessage(joinedMsg)
+       self.name = name
+       self.factory.users[name] = self
+       self.state = "CHAT"
+       self.updateSessionInfo()
 
-                                         if len(self.factory.users) > 1:
-                                             self.sendLine('Participants in chat: %s ' % (", ".join(self.factory.users)))
-                                         else:
-                                             self.sendLine("You're the only one here, %r" % name)
+       if len(self.factory.users) > 1:
+           self.sendLine('Participants in chat: %s ' % (", ".join(self.factory.users)))
+       else:
+           self.sendLine("You're the only one here, %r" % name)
 
 
-                                      def handle_CHAT(self, message):
-                                         message = self.getTime() + "<%s> %s" % (self.name, message)
-                                         self.broadcastMessage(colored.magenta(message))
-                                         chatLog.append(message)
-                                         self.updateSessionInfo()
+    def handle_CHAT(self, message):
+       message = self.getTime() + "<%s> %s" % (self.name, message)
+       self.broadcastMessage(colored.magenta(message))
+       chatLog.append(message)
+       self.updateSessionInfo()
 
-                                      def broadcastMessage(self, message):
-                                         for name, protocol in self.factory.users.iteritems():
-                                             if protocol != self:
-                                                 protocol.sendLine(colored.white(message))
-                                                 self.updateSessionInfo()
+    def broadcastMessage(self, message):
+       for name, protocol in self.factory.users.iteritems():
+           if protocol != self:
+               protocol.sendLine(colored.white(message))
+               self.updateSessionInfo()
 
-                                      def updateSessionInfo(self):
-                                          print(chr(27) + "[2J")
-                                          molding = "============================================"
-                                          print(molding)
-                                          print('Users in chat: %s ' % (", ".join(self.factory.users)))
-                                          print(molding)
-                                          global chatLog
-                                          chatLog = chatLog[-20:]
-                                          print("\n".join(chatLog))
+    def updateSessionInfo(self):
+        print(chr(27) + "[2J")
+        molding = "============================================"
+        print(molding)
+        print('Users in chat: %s ' % (", ".join(self.factory.users)))
+        print(molding)
+        global chatLog
+        chatLog = chatLog[-20:]
+        print("\n".join(chatLog))
 
-                                  class ChatFactory(Factory):
-                                      def __init__(self):
-                                          self.users = {}
+class ChatFactory(Factory):
+    def __init__(self):
+        self.users = {}
 
-                                      def buildProtocol(self, addr):
-                                          return ChatProtocol(self)
+    def buildProtocol(self, addr):
+        return ChatProtocol(self)
 
-                                  reactor.listenTCP(port, ChatFactory())
-                                  print("Chat Server started on port %s" % (port,))
-                                  reactor.run()
+reactor.listenTCP(port, ChatFactory())
+print("Chat Server started on port %s" % (port,))
+reactor.run()
 
 {% endhighlight %}
 
@@ -238,96 +238,96 @@ address must be specified.
 
 
  {% highlight python %}
-                                    from __future__ import print_function
+from __future__ import print_function
 
-                                    from twisted.internet.protocol import DatagramProtocol
-                                    from twisted.internet import reactor
+from twisted.internet.protocol import DatagramProtocol
+from twisted.internet import reactor
 
 
-                                    class Echo(DatagramProtocol):
+class Echo(DatagramProtocol):
 
-                                        def datagramReceived(self, data, addr):
-                                            print("received %r from %s" % (data, addr))
-                                            self.transport.write(data, addr)
+    def datagramReceived(self, data, addr):
+        print("received %r from %s" % (data, addr))
+        self.transport.write(data, addr)
 
-                                    reactor.listenUDP(9999, Echo())
-                                    reactor.run()
+reactor.listenUDP(9999, Echo())
+reactor.run()
 {% endhighlight %}
 
 Twisted in built client :Agent<br>
 A simple GET request
  {% highlight python %}
-                                    from __future__ import print_function
+from __future__ import print_function
 
-                                    from twisted.internet import reactor
-                                    from twisted.web.client import Agent
-                                    from twisted.web.http_headers import Headers
+from twisted.internet import reactor
+from twisted.web.client import Agent
+from twisted.web.http_headers import Headers
 
-                                    agent = Agent(reactor)
-                                    d = agent.request(
-                                        'GET',
-                                        'http://example.com/',
-                                        Headers({'User-Agent': ['Twisted Web Client Example']}),
-                                        None)
+agent = Agent(reactor)
+d = agent.request(
+    'GET',
+    'http://example.com/',
+    Headers({'User-Agent': ['Twisted Web Client Example']}),
+    None)
 
-                                    def cbResponse(ignored):
-                                        print('Response received')
-                                    d.addCallback(cbResponse)
+def cbResponse(ignored):
+    print('Response received')
+d.addCallback(cbResponse)
 
-                                    def cbShutdown(ignored):
-                                        reactor.stop()
-                                    d.addBoth(cbShutdown)
+def cbShutdown(ignored):
+    reactor.stop()
+d.addBoth(cbShutdown)
 
-                                    reactor.run()
+reactor.run()
 {% endhighlight %}
 
 Simple POST Request using Producers:
  {% highlight python %}
-                                  from zope.interface import implementer
-                                  from twisted.internet.defer import succeed
-                                  from twisted.web.iweb import IBodyProducer
-                                  from __future__ import print_function
-                                  from twisted.internet import reactor
-                                  from twisted.web.client import Agent
-                                  from twisted.web.http_headers import Headers
-                                  from stringprod import StringProducer
+from zope.interface import implementer
+from twisted.internet.defer import succeed
+from twisted.web.iweb import IBodyProducer
+from __future__ import print_function
+from twisted.internet import reactor
+from twisted.web.client import Agent
+from twisted.web.http_headers import Headers
+from stringprod import StringProducer
 
 
-                                  @implementer(IBodyProducer)
-                                  class StringProducer(object):
-                                      def __init__(self, body):
-                                          self.body = body
-                                          self.length = len(body)
+@implementer(IBodyProducer)
+class StringProducer(object):
+def __init__(self, body):
+    self.body = body
+    self.length = len(body)
 
-                                      def startProducing(self, consumer):
-                                          consumer.write(self.body)
-                                          return succeed(None)
+def startProducing(self, consumer):
+    consumer.write(self.body)
+    return succeed(None)
 
-                                      def pauseProducing(self):
-                                          pass
+def pauseProducing(self):
+    pass
 
-                                      def stopProducing(self):
-                                          pass
+def stopProducing(self):
+    pass
 
 
-                                      agent = Agent(reactor)
-                                      body = StringProducer("hello, world")
-                                      d = agent.request(
-                                          'GET',
-                                          'http://example.com/',
-                                          Headers({'User-Agent': ['Twisted Web Client Example'],
-                                                   'Content-Type': ['text/x-greeting']}),
-                                          body)
+agent = Agent(reactor)
+body = StringProducer("hello, world")
+d = agent.request(
+    'GET',
+    'http://example.com/',
+    Headers({'User-Agent': ['Twisted Web Client Example'],
+             'Content-Type': ['text/x-greeting']}),
+    body)
 
-                                      def cbResponse(ignored):
-                                          print('Response received')
-                                      d.addCallback(cbResponse)
+def cbResponse(ignored):
+    print('Response received')
+d.addCallback(cbResponse)
 
-                                      def cbShutdown(ignored):
-                                          reactor.stop()
-                                      d.addBoth(cbShutdown)
+def cbShutdown(ignored):
+    reactor.stop()
+d.addBoth(cbShutdown)
 
-                                      reactor.run()
+reactor.run()
 {% endhighlight %}
   Handling Response: ;)
  {% highlight python %}
