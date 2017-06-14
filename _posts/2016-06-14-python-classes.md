@@ -32,7 +32,7 @@ class User:
 {% endhighlight %}
 
 
-notice ``` def __init__(self, age, gender, location, contact):` This is called the constructor of the class.
+notice `def __init__(self, age, gender, location, contact):` This is called the constructor of the class.
 as name suggests it is used to  `construct` a `class instance` from the `class defination` of `User`.
 
 A class can be considered as a blueprint or instruction manula of how the class should be constructed.
@@ -40,3 +40,18 @@ until now memory is not allocated for the class above its just a blueprint/instr
 
 
 What if we want to use above class? for that we need tp create a `class instance` or an `object` of class `User`
+
+This is how we do it:
+{% highlight python %}
+john = User(20,'male','tokyo','98924676488')
+
+{% endhighlight %}
+and then to use its attributes
+
+{% highlight python %}
+john.setContact(889983388933)
+john.setLocation('UK')
+{% endhighlight %}
+
+
+
