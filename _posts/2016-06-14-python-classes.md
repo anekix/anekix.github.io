@@ -53,8 +53,10 @@ john.setLocation('UK')
 
 here `John` is just one instance of User class yo ucan create any number of instances of a class you want.
 
-Now whats going on with that {% highlight python %} self {% endhighlight %} in function definations inside class?
+Now whats going on with that `self` in function definations inside class?
 
+`self`
+ refers to instance itself that we created. calling `John..setLocation('UK')` puts those instruction to John instance. simply put `self` is the instance of the John that `setLocation` is being called upon.you could have written `User.setLocation(John,'UK')`
 
 
 
