@@ -35,13 +35,15 @@ A class can be considered as a blueprint or instruction manula of how the class 
 until now memory is not allocated for the class above its just a blueprint/instruction manual.
 
 
-What if we want to use above class? for that we need tp create a `class instance` or an `object` of class `User`
+What if we want to use above class? for that we need to create a `class instance` or an `object` of class `User`
 
 This is how we do it:
 {% highlight python %}
 John = User(20,'male','tokyo','98924676488')
 
 {% endhighlight %}
+The above is like asking python " if you happen to know how to create a `User` ,then create it with the values that i provide and remember to follow the instruction manual for creating a <b>User</b> `John` "
+
 and then to use its attributes
 
 {% highlight python %}
@@ -50,6 +52,8 @@ john.setLocation('UK')
 {% endhighlight %}
 
 here `John` is just one instance of User class yo ucan create any number of instances of a class you want.
+
+Now whats going on with that {% highlight python %} self {% endhighlight %} in function definations inside class?
 
 
 
