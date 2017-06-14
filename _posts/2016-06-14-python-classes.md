@@ -60,7 +60,7 @@ Now whats going on with that `self` in function definations inside class?
 
  #Instance Level v/s Class Lvel
 
- until now all we saw was creating **attributes** and **methods** at instamce level i.e each class has its own copy of its attributes.What is we wanted some attribute to be present at class level?
+ until now all we saw was creating **attributes** and **methods** at instance level i.e each class has its own copy of its attributes.What if we wanted some attribute to be present at class level?
 
  its actually quite simple. This is how its done
 {% highlight python %}
