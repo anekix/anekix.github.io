@@ -5,10 +5,6 @@ categories:
 - blog
 ---
 
-
-
-
-
 simple class defination - its just a logical grouping of objects and methods
 
 suppose we want a define a person object and with some attributes and methods on the person objects.
@@ -43,7 +39,7 @@ What if we want to use above class? for that we need tp create a `class instance
 
 This is how we do it:
 {% highlight python %}
-john = User(20,'male','tokyo','98924676488')
+John = User(20,'male','tokyo','98924676488')
 
 {% endhighlight %}
 and then to use its attributes
@@ -52,6 +48,9 @@ and then to use its attributes
 john.setContact(889983388933)
 john.setLocation('UK')
 {% endhighlight %}
+
+here `John` is just one instance of User class yo ucan create any number of instances of a class you want.
+
 
 
 
