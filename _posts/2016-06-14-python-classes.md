@@ -58,7 +58,7 @@ Now whats going on with that `self` in function definations inside class?
 `self`
  refers to instance itself that we created. calling `John..setLocation('UK')` puts those instruction to John instance. simply put `self` is the instance of the John that `setLocation` is being called upon.you could have written `User.setLocation(John,'UK')`
 
- # Instance Level v/s Class Lvel
+ #Instance Level v/s Class Lvel
 
  until now all we saw was creating **attributes** and **methods** at instamce level i.e each class has its own copy of its attributes.What is we wanted some attribute to be present at class level?
 
