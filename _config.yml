@@ -1,5 +1,11 @@
 # General Jekyll Config
+markdown: kramdown
+
 highlighter: rouge
+kramdown:
+    input: GFM 
+    syntax_highlighter: rouge
+
 url: http://example.com
 lsi: false
 exclude: [LICENSE, CNAME, README.md, .gitignore, Gemfile, Gemfile.lock]
