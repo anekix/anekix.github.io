@@ -6,16 +6,7 @@ categories:
 ---
 
 
-Sart this post with a direcrt question. 
-What do you do When you need to extend the functionalities of an existing object?
-
-There are two different ways 
-
-1) Using Inheritance
-
-
-baisc syntax is:
-
+Code:
 
 {% highlight python %}
 
