@@ -5,8 +5,7 @@ categories:
 - blog
 ---
 
-
- a version of the hashlib.foo methods that hash entire files rather than strings:
+a version of the hashlib.foo methods that hash entire files rather than strings:
 
 
 Code:
