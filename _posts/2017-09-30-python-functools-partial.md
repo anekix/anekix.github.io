@@ -1,6 +1,6 @@
 ---
 layout: post
-title: using functoools.partial to generate new functions from existing ones!
+title: using functoools to generate new functions from existing ones!
 categories:
 - blog
 ---
