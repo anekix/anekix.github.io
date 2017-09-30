@@ -57,7 +57,7 @@ cube = functools.partial(power,exp=3)
 
 using `functools.partial` we were able to create new functions from existing one! :)
 
-another example (refrence)[http://chriskiehl.com/article/Cleaner-coding-through-partially-applied-functions/]
+another example [refrence](http://chriskiehl.com/article/Cleaner-coding-through-partially-applied-functions/)
 
 {% highlight python %}
 
