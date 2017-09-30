@@ -57,3 +57,31 @@ cube = functools.partial(power,exp=3)
 
 using `functools.partial` we were able to create new functions from existing one! :)
 
+another example (refrence)[http://chriskiehl.com/article/Cleaner-coding-through-partially-applied-functions/]
+
+{% highlight python %}
+
+def _send_email(to, subject, body):
+  send_mail(
+    subject,
+    body,
+    settings.EMAIL_HOST_USER,
+  )
+
+
+email_admin      = partial(_send_email, to="admin@example.com")
+email_general_it = partial(_send_email, to="it@example.com")
+email_marketing  = partial(_send_email, to="marketing@example.com")
+email_sales      = partial(_send_email, to="sales@example.com")
+
+...
+
+if thing_is_broken():
+  # the 'to' field is already filled in! Hooray!
+  email_admin(subject="It's brokened!", body='Fix it!')
+
+
+if sales_people(): 
+  email_sales(subject="sales stuff", body="business, business, business!")  
+
+{% endhighlight %}
