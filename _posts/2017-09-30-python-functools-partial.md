@@ -15,7 +15,7 @@ def power(base, exponent):
 
 >>> power(2,3)
 8
->>>power(3,3)
+>>> power(3,3)
 27
 
 {% endhighlight %}
@@ -49,9 +49,9 @@ square = functools.partial(power, exp=2)
 cube = functools.partial(power,exp=3)
 
 
->>>print square(5)
+>>> print square(5)
 25
->>>print cube(1)
+>>> print cube(1)
 1
 {% endhighlight %}
 
