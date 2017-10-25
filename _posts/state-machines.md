@@ -20,7 +20,19 @@ def HandlePlayerInput(key):
       Yvelocity = JUMP_VELOCITY # set velocity in y direction to jump
       player = PLAYER_JUMP_IMAGE  
 ```
+Now there is some problem with the code above. can you guess what it is?
 
+If you have ever tried to write eve the simplest game you would know there is always an `update()` loop which looks for various events( and thus appropriatley set relevant actions like increasing/decreasing health, rendering appropriate graphics to the screen.. etc) during the game lifecycle.
+
+what happens if i go on and press `SPACE` key immediately follwed by another `SPACE` key press? our player would perform an air jump. that is it will jump again while in mid air! well thats not a required behaviour. So what do we do now?
+
+Lets add a Flag/Boolean to check if the player is on ground and perform jump only if the player is on ground. The new code is:
+```python
+def HandlePlayerInput(key):
+    if key == SPACE and player_on_ground == True: # this new conditions will avoid mid air jump.
+      Yvelocity = JUMP_VELOCITY 
+      player = PLAYER_JUMP_IMAGE  
+```
 
 
 
