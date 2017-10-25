@@ -29,10 +29,30 @@ what happens if i go on and press `SPACE` key immediately follwed by another `SP
 Lets add a Flag/Boolean to check if the player is on ground and perform jump only if the player is on ground. The new code is:
 ```python
 def HandlePlayerInput(key):
-    if key == SPACE and player_on_ground == True: # this new conditions will avoid mid air jump.
+    if key == SPACE and player_is_jumping == False: # this new conditions will avoid mid air jump.
       Yvelocity = JUMP_VELOCITY 
-      player = PLAYER_JUMP_IMAGE  
+      player = PLAYER_JUMP_IMAGE
+      player_is_jumping = True  #indicate that player is jumping so hamering SPACE wont make player to jump infinetly!
 ```
+
+Now we aslo have a requirement that our Hero should duck down when pressing `DOWN_ARROW` key and stand back up when we release it.
+
+The above code can be modified as:
+def HandlePlayerInput(key):
+    if key == SPACE and player_is_jumping == False: 
+        Yvelocity = JUMP_VELOCITY 
+        player = PLAYER_JUMP_IMAGE
+        player_is_jumping = True 
+      
+    if key == PRESS_DOWN and player_is_jumping == False:
+        plyer = PLAYER_DUCK_IMAGE
+    if key == RELEASE_DOWN:
+        player = PLAYER_STANDING_IMAGE
+```
+
+
+
+
 
 
 
