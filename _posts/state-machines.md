@@ -38,6 +38,7 @@ def HandlePlayerInput(key):
 Now we aslo have a requirement that our Hero should duck down when pressing `DOWN_ARROW` key and stand back up when we release it.
 
 The above code can be modified as:
+```python
 def HandlePlayerInput(key):
     if key == SPACE and player_is_jumping == False: 
         Yvelocity = JUMP_VELOCITY 
