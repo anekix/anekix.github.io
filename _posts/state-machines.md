@@ -1,3 +1,7 @@
+Refrences
+(http://gameprogrammingpatterns.com/state.html)
+(https://news.ycombinator.com/item?id=2949543)
+
 If you happen to study about automat theory , you would have come across terms like `state machines` or in a more general term `FSM( Finite state machines)`.
 These are quite importatnt tools and some specific problems can be very well modeled with state machines.
 
@@ -50,10 +54,9 @@ def HandlePlayerInput(key):
     if key == RELEASE_DOWN:
         player = PLAYER_STANDING_IMAGE
 ```
+Now this code works but it still has a major bug. what if we press `ARROW_DOWN` and then press `SPACE` Key. Our player would make a jump in ducking position which is quite funny and no mortal would ever wnat that to happen :D
 
-
-
-
+So what do we do now. We add anothoer Boolean/Flag.
 
 
 
