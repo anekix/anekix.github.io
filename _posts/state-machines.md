@@ -14,9 +14,9 @@ A) When pressed key `SPACE` player should perform a jump.
 Lets write this some code for this.
 
 
-```
-def HandlePlayerInput( key ):
-    if key == SPACE :
+```python
+def HandlePlayerInput(key):
+    if key == SPACE:
       Yvelocity = JUMP_VELOCITY # set velocity in y direction to jump
       player = PLAYER_JUMP_IMAGE  
 ```
