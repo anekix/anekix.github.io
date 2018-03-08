@@ -5,7 +5,13 @@ categories:
 - blog
 ---
 
+
+
+
+
 {% highlight python %}
+
+
 from klein import route, run, Klein
 
 class Users(object):
@@ -15,11 +21,18 @@ class Users(object):
         request.setHeader('content-type', 'text/plain')
         return 'A User Named "{username}".'.format(username=username)
 
+
+
+
+
+
 class MyFacebookApis(object):
     fb_apis = Klein()
     @mathroutes.route("/getPageLikes/<int:fb_id>")
     def add(self, request, a, b):
         return str(a + b)
+
+
 
 
 @route("/users", branch=True)
