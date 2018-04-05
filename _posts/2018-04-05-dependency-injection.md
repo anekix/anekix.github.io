@@ -5,30 +5,35 @@ categories:
 - blog
 ---
 
-Conside the  code below.There is something clearly wrong with it.
+Conside the  code below which represents the following conditions.
+We have a class A which needs an instance of another class B to carry out some computation.
+There is something clearly wrong with it.
 
-{% highlight java %}
+{% highlight python %}
 
-public class A {
-  private B b;
+class B:
+    def doSomething(self):
+        return "hello"
 
-  public A() {
-    this.b = new B(); 
-  }
+class A:
 
-  public void DoSomeStuff() {
-    // Do something with B here
-  }
-}
+    def __init__(self, foo, bar):
+        self.foo = foo
+        self.bar = bar
+        self.b = B()
 
-public static void Main(string[] args) {
-  A a = new A();
-  a.DoSomeStuff();
-}
+    def makeCalculations(self):
+        return self.foo + self.bar + self.b.doSomething()
+
+
+if name ==__main__:
+
+    a = A()
+    a.makeCalculations()
 
 {% endhighlight %}
 
-The scenario is , There is some class A, which depends upon another class B being its instance variable.
+
 
 
 
