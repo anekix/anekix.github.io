@@ -6,7 +6,7 @@ categories:
 ---
 
 Conside the  code below which represents the following conditions.
-We have a class A which needs an instance of another class B to carry out some computation.
+We have a ***class A*** which needs an instance of another ***class B*** to carry out some computation.
 There is something clearly wrong with it.
 
 {% highlight python %}
@@ -69,15 +69,18 @@ if name ==__main__:
 Now if there is any change is there in class B it can simple be paseed to class A without changing the class A itself,
 
 The advantages are:
-We can not test both classess independent of each other.(to test class A we can simply pass a  
+
+We can now test both classes independent of each other.(to test class A we can simply pass a  
 mock of class B) & We also gained he ability to control functionality from a singl eplace insted of spreading it throughout the program.
 
-Consider the case when class B needs some parameter in its constructor, class A ***has*** to know
-about all parameters that class B accepts, which is something completely unrelated to class A.it nevver 
+Consider the case when ***class B*** needs some parameter in its constructor, class A ***has*** to know
+about all parameters that ***class B*** accepts, which is something completely unrelated to ***class A***.it never 
 ***has***/***need*** to know about what class A needs.
 
 
-Passing an already constructed instance of class ***B***  Bexplicitly to A's constructor solves the above problema and make A depend only on what A needs.    
+Passing an already constructed instance of ***class B***  Bexplicitly to ***A's*** constructor solves the above problema and make A depend only on what A needs.    
+
+Looking at the above example we are free to conclude that dependency injection is a way to create your dependencies outside of the class that uses it. Inject them from the outside, and take control about their creation away from the inside of your class. 
 
 
 
