@@ -68,7 +68,16 @@ if name ==__main__:
 
 Now if there is any change is there in class B it can simple be paseed to class A without changing the class A itself,
 
+The advantages are:
+We can not test both classess independent of each other.(to test class A we can simply pass a  
+mock of class B) & We also gained he ability to control functionality from a singl eplace insted of spreading it throughout the program.
 
+Consider the case when class B needs some parameter in its constructor, class A ***has*** to know
+about all parameters that class B accepts, which is something completely unrelated to class A.it nevver 
+***has***/***need*** to know about what class A needs.
+
+
+Passing an already constructed instance of class ***B***  Bexplicitly to A's constructor solves the above problema and make A depend only on what A needs.    
 
 
 
