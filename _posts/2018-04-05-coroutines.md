@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Coroutines in python
+title: Native coroutines and asynchronous programming in python.
 categories:
 - blog
 ---
@@ -15,7 +15,7 @@ ONe way to use coroutines is by using ***yield from*** expression in generators.
 
 As of python 3.5 and upwards, coroutines were made an proper standalone concept seperate from generators( even though both share same code)
 
-The takeaway is that since python 3.5 , coroutines a native Python language feature, and clearly different from generators.This helps in removing generator/coroutine ambiguity and have a clear mental model of coroutines while writing asynchronous code in python.
+The takeaway is that since python 3.5 ,a coroutine is a native Python language feature, and clearly different from generators.This helps in removing generator/coroutine ambiguity and have a clear mental model of coroutines while writing asynchronous code in python.
 
 
 
