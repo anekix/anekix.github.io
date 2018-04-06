@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Native coroutines , asyncio and asynchronous programming in python.
+title: Native coroutines , asyncio and async programming in python.
 categories:
 - blog
 ---
