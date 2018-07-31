@@ -1,5 +1,8 @@
 ## Async programming in python
 
+NOTE: Before starting out , i want to clarify that all this was made possible beacuse of awesome work done by many people and the articles that they have written, infact this article dirctly picks up examples from other sources( which i will try to nention wherever possible ). 
+This is written for my basic understanding of async programming in python & how everything fits together.There was a lot of info scattered around so i wanted to club them together.
+
 ```python
 
 def gen():
