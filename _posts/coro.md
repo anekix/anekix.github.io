@@ -37,3 +37,20 @@ generators can safely be idetified as subset of coroutines, while both can yield
 after the implementation of PEP 342 in python version 2.5 it became possible to use `yield` in an expression.a new api `send()` was added which allowed to send values to the generator which was previously not possible.
 
 consider this code fragment below:
+```python
+def coro():
+    hello = yield "Hello"
+    yield hello
+
+
+c = coro()
+print(next(c))
+print(c.send("World"))
+
+''' output
+ hello 
+ World
+
+'''
+```
+
