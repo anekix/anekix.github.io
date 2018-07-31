@@ -38,19 +38,23 @@ after the implementation of PEP 342 in python version 2.5 it became possible to 
 
 consider this code fragment below:
 ```python
-def coro():
-    hello = yield "Hello"
-    yield hello
 
+def double_number(number):
+  while True:
+  number *= 2
+  number = yield number
 
-c = coro()
-print(next(c))
-print(c.send("World"))
+>>> c = double_number(4)
+>>> 
+>>> c.send(None)
+8
+>>> c.send(5) #10
+10
+>>> c.send(1500) #3000
+3000
+>>> c.send(3) #6
 
-''' output
- hello 
- World
-
-'''
 ```
 
+a call to `send()` & resumes the coroutine execution ( just like the call to `next()` would resume execution of a geenrator) & we can pass value to the coroutine.
+initially with just the generator we could loop over it by calling `next(coro)` but with the prsence of newer api to generators we can now also send values to it using `send()` thus making it a coroutine.
