@@ -33,3 +33,7 @@ Coroutines are computer-program components that generalize `methods/functions` f
 generators can safely be idetified as subset of coroutines, while both can yield multiple times, suspending their execution and allowing re-entry at multiple entry points, they differ in coroutines' ability to control where execution continues immediately after they yield, while generators cannot, instead transferring control back to the generator's caller.[6] That is, since generators are primarily used to simplify the writing of iterators, the yield statement in a generator does not specify a coroutine to jump to, but rather passes a value back to a parent routine.
 
 
+
+after the implementation of PEP 342 in python version 2.5 it became possible to use `yield` in an expression.a new api `send()` was added which allowed to send values to the generator which was previously not possible.
+
+consider this code fragment below:
