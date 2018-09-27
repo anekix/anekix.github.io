@@ -7,7 +7,9 @@ categories:
 
 One of the greatest additions to the javascrcipt ecosystem has been the addition of `typescript`. one important part that was introduced in typescript
 was the ability to define `interface`. simply put an interface is a way to define a contract to the consumer of a particular 
-code or more generally interface is a group of related properties and methods that `describe an object`
+code or more generally interface is a group of related properties and methods that `describe an object`.
+
+One thing to remember is that interfaces are just used by the transpiler to do type checking.nothing more nothing less! once transpiled to javascript there is no meaning of interfaces as javascript is not a typed language.
 
 
 {% highlight javascript %}
