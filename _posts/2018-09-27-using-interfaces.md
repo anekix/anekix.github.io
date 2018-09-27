@@ -7,7 +7,7 @@ categories:
 
 One of the greatest additions to the javascrcipt ecosystem has been the addition of `typescript`. one important part that was introduced in typescript
 was the ability to define `interface`. simply put an interface is a way to define a contract to the consumer of a particular 
-code.
+code or more generally interface is a group of related properties and methods that `describe an object`
 
 
 {% highlight javascript %}
