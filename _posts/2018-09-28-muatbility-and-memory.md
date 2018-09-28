@@ -1,7 +1,7 @@
 
 ---
 layout: post
-title: mutability & memory management in python!
+title: mutability & memory-management in python
 categories:
 - blog
 ---
